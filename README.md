@@ -1,59 +1,40 @@
-# Project Title
+# Projekt1
 
-A short description about the project and/or client.
+Server sa začína vytvorením socketu aby sa mohlo pripojiť na server. Následné nastavenie setsockopt aby nám nepadal server.
+Pripajáme sa na server podľa portu ktorý sme zadali v argumente, a pomocou funkcie bind priradíme meno socketu.
+Pomocou funkcie listen čaká sa na pripojenia na soketu, a následne funkcia accpet povolí spojenie so socketom.
+Pre popis projektu bolo treba naprogramovať v C funkcie, ktoré nám budú vraciať názov PC, názov procesora a následne joho vyuźitia. 
+Názov PC sme zistili cez funkciu gethostname pokiaľ za serverom bol odkaz na hostname. 
+Názov procesora sme zistili pomocou súboru /prec/cpuinfo kde sme si podľa model name naŠli tento názov. 
+Využitie procesora sme zistili pomocou súboru /proc/stat kde sme pomocou funkcie skip_lines nechali iba prvý riadok ktorý je dôležitý a jeho hodnoty sme si vložili do štruktúry, do jednotlivých premén. toto sa nám spravilo 2 krát kvôli predchadzajúcim štatistikám a terajším aby sme mohli pomocou funkcie calculate_load vypočítať využitie procesora.
 
-## Getting Started
+## Spustenie 
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Vytvoríme si make aby nám preložil c súbor hinfosvc.c na spustiteľný súbor.
 
-### Prerequisites
-
-The things you need before installing the software.
-
-* You need this
-* And you need this
-* Oh, and don't forget this
-
-### Installation
-
-A step by step guide that will tell you how to get the development environment up and running.
-
+Server spustíme zadaním ./hinfosvc (port) a na stránke zadáme adresu:
 ```
-$ First step
-$ Another step
-$ Final step
+127.0.0.1:port/hostname
+127.0.0.1:port/cpu-name
+127.0.0.1:port/load
 ```
+server ukončíme CTRL+C
 
-## Usage
-
-A few examples of useful commands and/or tasks.
-
+alebo spustíme server pomocou ./hinfosvc (port) & a v prikazovom riadku zadáme curl+adresa napr:
 ```
-$ First example
-$ Second example
-$ And keep this in mind
+curl http://127.0.0.1:12345/hostname
+curl http://127.0.0.1:12345/cpu-name
+curl http://127.0.0.1:12345/load
 ```
+server ukončíme tzv kill processom
 
-## Deployment
 
-Additional notes on how to deploy this on a live or release system. Explaining the most important branches, what pipelines they trigger and how to update the database (if anything special).
-
-### Server
-
-* Live:
-* Release:
-* Development:
-
-### Branches
-
-* Master:
-* Feature:
-* Bugfix:
-* etc...
-
-## Additional Documentation and Acknowledgments
-
-* Project folder on server:
-* Confluence link:
-* Asana board:
-* etc...
+### Príklady
+```
+curl http://127.0.0.1:12345/hostname
+13%
+curl http://127.0.0.1:12345/cpu-name
+AMD Ryzen 5 3550H with Radeon Vega Mobile Gfx
+curl http://127.0.0.1:12345/load
+B07-1219A
+```
