@@ -1,10 +1,10 @@
 # Projekt1
 
 Server sa začína vytvorením socketu aby sa mohlo pripojiť na server. Následné nastavenie setsockopt aby nám nepadal server.
-Pripajáme sa na server podľa portu ktorý sme zadali v argumente, a pomocou funkcie bind priradíme meno socketu.
-Pomocou funkcie listen čaká sa na pripojenia na soketu, a následne funkcia accpet povolí spojenie so socketom.
-Pre popis projektu bolo treba naprogramovať v C funkcie, ktoré nám budú vraciať názov PC, názov procesora a následne joho vyuźitia. 
-Názov PC sme zistili cez funkciu gethostname pokiaľ za serverom bol odkaz na hostname. 
+Pripajáme sa na server podľa portu, ktorý sme zadali v argumente, a pomocou funkcie bind priradíme meno socketu.
+Pomocou funkcie listen sa čaká na pripojenia na soketu, a následne funkcia accept povolí spojenie so socketom.
+Pre popis projektu bolo treba naprogramovať v C funkcie, ktoré nám budú vraciať názov PC, názov procesora a následne joho využitia. 
+Názov PC sme zistili cez funkciu gethostname. 
 Názov procesora sme zistili pomocou súboru /prec/cpuinfo kde sme si podľa model name naŠli tento názov. 
 Využitie procesora sme zistili pomocou súboru /proc/stat kde sme pomocou funkcie skip_lines nechali iba prvý riadok ktorý je dôležitý a jeho hodnoty sme si vložili do štruktúry, do jednotlivých premén. toto sa nám spravilo 2 krát kvôli predchadzajúcim štatistikám a terajším aby sme mohli pomocou funkcie calculate_load vypočítať využitie procesora.
 
