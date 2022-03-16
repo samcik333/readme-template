@@ -1,40 +1,24 @@
-# Projekt1
-
-Server sa začína vytvorením socketu aby sa mohlo pripojiť na server. Následné nastavenie setsockopt aby nám nepadal server.
-Pripajáme sa na server podľa portu, ktorý sme zadali v argumente, a pomocou funkcie bind priradíme meno socketu.
-Pomocou funkcie listen sa čaká na pripojenia na soketu, a následne funkcia accept povolí spojenie so socketom.
-Pre popis projektu bolo treba naprogramovať v C funkcie, ktoré nám budú vraciať názov PC, názov procesora a následne joho využitia. 
-Názov PC sme zistili cez funkciu gethostname. 
-Názov procesora sme zistili pomocou súboru /prec/cpuinfo kde sme si podľa model name naŠli tento názov. 
-Využitie procesora sme zistili pomocou súboru /proc/stat kde sme pomocou funkcie skip_lines nechali iba prvý riadok ktorý je dôležitý a jeho hodnoty sme si vložili do štruktúry, do jednotlivých premén. toto sa nám spravilo 2 krát kvôli predchadzajúcim štatistikám a terajším aby sme mohli pomocou funkcie calculate_load vypočítať využitie procesora.
-
-## Spustenie 
-
-Vytvoríme si make aby nám preložil c súbor hinfosvc.c na spustiteľný súbor.
-
-Server spustíme zadaním ./hinfosvc (port) a na stránke zadáme adresu:
-```
-127.0.0.1:port/hostname
-127.0.0.1:port/cpu-name
-127.0.0.1:port/load
-```
-server ukončíme CTRL+C
-
-alebo spustíme server pomocou ./hinfosvc (port) & a v prikazovom riadku zadáme curl+adresa napr:
-```
-curl http://127.0.0.1:12345/hostname
-curl http://127.0.0.1:12345/cpu-name
-curl http://127.0.0.1:12345/load
-```
-server ukončíme tzv kill processom
-
-
-### Príklady
-```
-curl http://127.0.0.1:12345/hostname
-13%
-curl http://127.0.0.1:12345/cpu-name
-AMD Ryzen 5 3550H with Radeon Vega Mobile Gfx
-curl http://127.0.0.1:12345/load
-B07-1219A
-```
+## Implementačná dokumentácia k 1. úlohe do IPP 2021/2022
+Meno a priezvisko: Samuel Sadlek  
+Login: xsadle01  
+  
+### parse.php
+Ako prvé sme si skontrolovali, či máme správny počet argumentov, načítali sme si súbor zo vstupu,  
+pomocou regexu sme odstránili komentáre na konkrétnom riadku a funkciu trim sme použili na odstránenie bielych znakov
+### parse_line.php
+Skontrolovali sme či sa prvý riadok nerovná hlavičke pokiaľ áno odstránime bodku a vypíšeme do xml názov hlavičky.  
+Funkcia preg_split mi rozdelí slová do poľa podľa bielych znakov.
+### set_inst.php
+Vytvorili sme si konštanty, do ktorých sme si uložili všetky inštrukcie, koľko argumentov potrebujú a aké.  
+Kontrolujeme pomocou regexu či boli inštrukcie správne zapísané vždy v prvom poli riadku.
+Tieto inštrukcie sa zapíšu ako Objekt
+Následne kontrolujeme typy za inštrukciou zavolaním funkcie get_type. V nej kontrolujeme  
+cez cyklus, ktorý spracováva pole riadku, operandy či sú správne zapísané podľa jazyka IPPcode22.  
+S týmto sa kontroluje aj, či bol správny počet operandov pre každú konkrétnu inštrukciu.  
+Pri znakoch ako sú napríklad "<" sme prepísali špecialnou hodnotou "&lt;"
+Následný switch nám prechádza po jednotlivých symbolov predom definovaných konštánt, ak nájde inštrukcie, následne kontroluje, 
+či sa typ predefinovaného operandu rovná typu práve spracovaváneho operandu. Pokiaľ nájde, zapíše sa ako objekt.
+### Argument.php
+Táto trieda vytvára objekty typu operandov má svoj typ,symbol,a hodnotu. Symbol je uložený iba ak sa typ nerovná label.
+### Instruction.php
+Táto trieda vytvára objekty pre inštrukcie a má svoje meno a počet operandov.
